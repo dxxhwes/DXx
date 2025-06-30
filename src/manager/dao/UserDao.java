@@ -9,6 +9,7 @@ import java.sql.Date;
 
 public class UserDao
 {
+
     /**
      * 按用户名和角色查找用户（原有功能）
      */
