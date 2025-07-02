@@ -6,7 +6,7 @@ import manager.util.SystemConstants;
 import javax.swing.*;
 
 public class MainFrame {
-    public static final JFrame frame = new JFrame("健康管理系统！");
+    public static final JFrame frame = new JFrame("健康管理系统！创建者：戴枭");
 
     public static Users users = null;
 

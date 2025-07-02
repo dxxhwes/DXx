@@ -9,70 +9,75 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class AdminPanel extends JPanel
-{
-    //内部窗口合计
-    private static JDesktopPane contentPanel=new JDesktopPane();
+/**
+ * 管理员主面板，支持检查项管理、检查组管理等功能
+ */
+public class AdminPanel extends JPanel {
+    // 内部窗口合计
+    private static JDesktopPane contentPanel = new JDesktopPane();
 
-    public AdminPanel()
-    {
-        this.setBounds(0,0, SystemConstants.FRAME_WIDTH,SystemConstants.FRAME_HEIGHT);
+    public AdminPanel() {
+        this.setBounds(0, 0, SystemConstants.FRAME_WIDTH, SystemConstants.FRAME_HEIGHT);
         this.setLayout(new BorderLayout());
         this.setVisible(true);
 
-        JMenuBar menuBar=new JMenuBar();
-        menuBar.setBounds(0,0,SystemConstants.FRAME_WIDTH,50);
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBounds(0, 0, SystemConstants.FRAME_WIDTH, 50);
 
-        this.add(menuBar,BorderLayout.NORTH);
+        this.add(menuBar, BorderLayout.NORTH);
         contentPanel.removeAll();
         contentPanel.repaint();
+        this.add(contentPanel, BorderLayout.CENTER);
 
-        this.add(contentPanel,BorderLayout.CENTER);
+        // 检查项管理菜单
+        JMenu itemMenu = new JMenu("检查项");
+        itemMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                setContent(new DataTablePanel());
+            }
+        });
 
-        JMenu parentMenu=new JMenu("检查项");
+        // 检查组管理菜单
+        JMenu groupMenu = new JMenu("检查组");
+        groupMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                setContent(new CheckGroupPanel());
+            }
+        });
 
-        parentMenu.addMouseListener(new MouseAdapter(){
-        @Override
-        public void mousePressed(MouseEvent e)
-        {
-            setContent(new DataTablePanel());
-        }
-    });
+        JMenu adminMenu = new JMenu("管理员");
+        JMenu userMenu = new JMenu("用户");
+        JMenu systemMenu = new JMenu("系统管理");
 
-        JMenu adminMenu=new JMenu("管理员");
-        JMenu userMenu=new JMenu("用户");
-        JMenu systemMenu=new JMenu("系统管理");
-
-        menuBar.add(parentMenu);
+        menuBar.add(itemMenu);
+        menuBar.add(groupMenu);
         menuBar.add(adminMenu);
         menuBar.add(userMenu);
         menuBar.add(systemMenu);
 
-        JMenuItem passwordMenu=new JMenuItem("修改密码");
-        JMenuItem logoutMenu=new JMenuItem("退出登录");
+        JMenuItem passwordMenu = new JMenuItem("修改密码");
+        JMenuItem logoutMenu = new JMenuItem("退出登录");
         systemMenu.add(passwordMenu);
         systemMenu.add(logoutMenu);
 
-        logoutMenu.addMouseListener(new MouseAdapter(){
+        logoutMenu.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e)
-            {
+            public void mousePressed(MouseEvent e) {
                 contentPanel.removeAll();
                 contentPanel.repaint();
                 MainFrame.setContent(new LoginPanel());
             }
         });
-
     }
-    //切换内部窗口
-    public static void setContent(JInternalFrame internalFrame)//内部窗口
-    {
-        internalFrame.setSize(SystemConstants.FRAME_WIDTH-15,SystemConstants.FRAME_HEIGHT-60);
 
+    // 切换内部窗口
+    public static void setContent(JInternalFrame internalFrame) {
+        internalFrame.setSize(SystemConstants.FRAME_WIDTH - 15, SystemConstants.FRAME_HEIGHT - 60);
         internalFrame.setVisible(true);
         contentPanel.removeAll();
         contentPanel.repaint();
         contentPanel.add(internalFrame);
-
     }
 }

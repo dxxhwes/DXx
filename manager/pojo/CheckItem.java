@@ -1,7 +1,7 @@
 package manager.pojo;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 // CheckItem表数据
 public class CheckItem implements Serializable {
@@ -10,16 +10,16 @@ public class CheckItem implements Serializable {
     private String cname;            // 名称
     private String refer_val;        // 参考值
     private String unit;             // 单位
-    private Date create_date;        // 创建时间
-    private Date upd_date;           // 更新时间
-    private Date delete_date;        // 删除时间
+    private Timestamp create_date;   // 创建时间
+    private Timestamp upd_date;      // 更新时间
+    private Timestamp delete_date;   // 删除时间
     private String option_user;      // 操作人
     private String status;           // 状态
     private Integer userId;          // 所属用户ID
 
     // 11参数构造方法
     public CheckItem(Integer cid, String ccode, String cname, String refer_val, String unit,
-                     Date create_date, Date upd_date, Date delete_date,
+                     Timestamp create_date, Timestamp upd_date, Timestamp delete_date,
                      String option_user, String status, Integer userId) {
         this.cid = cid;
         this.ccode = ccode;
@@ -36,7 +36,7 @@ public class CheckItem implements Serializable {
 
     // 10参数构造方法（兼容旧代码）
     public CheckItem(Integer cid, String ccode, String cname, String refer_val, String unit,
-                     Date create_date, Date upd_date, Date delete_date,
+                     Timestamp create_date, Timestamp upd_date, Timestamp delete_date,
                      String option_user, String status) {
         this(cid, ccode, cname, refer_val, unit, create_date, upd_date, delete_date, option_user, status, null);
     }
@@ -60,14 +60,14 @@ public class CheckItem implements Serializable {
     public String getUnit() { return unit; }
     public void setUnit(String unit) { this.unit = unit; }
 
-    public Date getCreate_date() { return create_date; }
-    public void setCreate_date(Date create_date) { this.create_date = create_date; }
+    public Timestamp getCreate_date() { return create_date; }
+    public void setCreate_date(Timestamp create_date) { this.create_date = create_date; }
 
-    public Date getUpd_date() { return upd_date; }
-    public void setUpd_date(Date upd_date) { this.upd_date = upd_date; }
+    public Timestamp getUpd_date() { return upd_date; }
+    public void setUpd_date(Timestamp upd_date) { this.upd_date = upd_date; }
 
-    public Date getDelete_date() { return delete_date; }
-    public void setDelete_date(Date delete_date) { this.delete_date = delete_date; }
+    public Timestamp getDelete_date() { return delete_date; }
+    public void setDelete_date(Timestamp delete_date) { this.delete_date = delete_date; }
 
     public String getOption_user() { return option_user; }
     public void setOption_user(String option_user) { this.option_user = option_user; }

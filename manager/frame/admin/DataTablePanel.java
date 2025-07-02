@@ -120,6 +120,7 @@ public class DataTablePanel extends JInternalFrame
             );
         } else {
             // 普通用户只查自己
+            Object[][] data = CheckItemDao.queryCheckItemsByUserId(MainFrame.users.getUser_id(), field1.getText(), field2.getText());
             tableModel = new DefaultTableModel(
                     CheckItemDao.queryCheckItemsByUserId(MainFrame.users.getUser_id(), field1.getText(), field2.getText()),
                     CheckItemDao.columnNames

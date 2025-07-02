@@ -3,60 +3,75 @@ package manager.common;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
-//发送sql
-public class BaseDao
-{
-    //增删改 查
+/**
+ * 安全的BaseDao工具类：自动管理连接关闭，防止连接泄漏。
+ * 推荐用法：用完ResultSet后，在finally块同时关闭ResultSet、Statement和Connection。
+ */
+public class BaseDao {
 
-    //查询返回结果会在resultset(结果集
-    public static ResultSet executeDQL(String sql,Object[] params)
-    {
-        Connection conn=DBConn.getConn();
-        PreparedStatement st=null;
-        ResultSet rs=null;
+    /**
+     * 查询操作，返回ResultSet。
+     * 注意：调用方必须在finally中关闭ResultSet、PreparedStatement和Connection！
+     */
+    public static ResultSet executeDQL(String sql, Object[] params) {
+        Connection conn = DBConn.getConn();
+        PreparedStatement st = null;
+        ResultSet rs = null;
 
-        try{
-            st=conn.prepareStatement(sql);
+        try {
+            st = conn.prepareStatement(sql);
 
-            if(params!=null)
-            {
-                for(int i=0;i<params.length;i++)
-                {
-                    st.setObject(i+1,params[i]);
+            if (params != null) {
+                for (int i = 0; i < params.length; i++) {
+                    st.setObject(i + 1, params[i]);
                 }
             }
-            rs=st.executeQuery();
-        }catch(Exception e){
+            rs = st.executeQuery();
+
+            // 返回rs，但必须保证st和conn在rs关闭后再关闭
+            // 封装rs时不能关st和conn，否则rs失效
+            // 推荐调用方在finally中：
+            // try { if (rs != null) rs.close(); } catch (Exception ignore) {}
+            // try { if (st != null) st.close(); } catch (Exception ignore) {}
+            // try { if (conn != null) conn.close(); } catch (Exception ignore) {}
+
+            return rs;
+        } catch (Exception e) {
             e.printStackTrace();
+            // 发生异常时应该关闭连接
+            try { if (rs != null) rs.close(); } catch (Exception ignore) {}
+            try { if (st != null) st.close(); } catch (Exception ignore) {}
+            try { if (conn != null) conn.close(); } catch (Exception ignore) {}
+            return null;
         }
-        return rs;
     }
 
+    /**
+     * 增删改操作，自动关闭所有JDBC资源。
+     */
+    public static int executeDML(String sql, Object... params) {
+        Connection conn = null;
+        PreparedStatement st = null;
+        int r = 0;
 
-    //增删改 返回值int类型 代表更改的行数 更改失败返回0以下
-    public static int executeDML(String sql,Object... params)
-    {
-        Connection conn=DBConn.getConn();
-        PreparedStatement st=null;
-        int r=0;
+        try {
+            conn = DBConn.getConn();
+            st = conn.prepareStatement(sql);
 
-        try{
-            st=conn.prepareStatement(sql);
-
-            if(params!=null)
-            {
-                for(int i=0;i<params.length;i++)
-                {
-                    st.setObject(i+1,params[i]);
+            if (params != null) {
+                for (int i = 0; i < params.length; i++) {
+                    st.setObject(i + 1, params[i]);
                 }
             }
-            r=st.executeUpdate();
-        }catch(Exception e){
+            r = st.executeUpdate();
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try { if (st != null) st.close(); } catch (Exception ignore) {}
+            try { if (conn != null) conn.close(); } catch (Exception ignore) {}
         }
         return r;
     }
-
-
 }
