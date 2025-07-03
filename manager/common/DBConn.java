@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/*
+ * 数据库连接工具类
+ * 负责加载数据库驱动，提供获取数据库连接的方法
+ */
+
 public class DBConn
 {
 
@@ -11,6 +16,7 @@ public class DBConn
     private static String username="root";
     private static String pass="20060303dx";
 
+    // 静态代码块：程序启动时加载JDBC驱动
     static{
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -20,6 +26,7 @@ public class DBConn
     }
 
 
+    //获取数据库连接
     public static Connection getConn()
     {
         Connection conn=null;

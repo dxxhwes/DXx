@@ -9,8 +9,8 @@ import java.sql.Date;
 
 public class UserDao
 {
-    /**
-     * 按用户名和角色查找用户（原有功能）
+    /*
+     * 按用户名和角色查找用户
      */
     public Users getUserByName(String userName, int roleId)
     {
@@ -42,7 +42,7 @@ public class UserDao
         return users;
     }
 
-    /**
+    /*
      * 判断用户名是否已存在（注册用）
      */
     public static boolean isUsernameExists(String username) {
@@ -57,19 +57,32 @@ public class UserDao
         }
     }
 
-    /**
-     * 注册新用户（只需账号和密码，其它字段为null）
+    /*
+     * 注册新用户，包含账号、密码、姓名、性别、电话、生日
      */
     public static boolean register(Users user) {
-        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        String sql = "INSERT INTO users (username, password, uname, sex, tel, bir) VALUES (?, ?, ?, ?, ?, ?)";
         int result = BaseDao.executeDML(sql, new Object[]{
-                user.getUsername(), user.getPassword()
+                user.getUsername(),
+                user.getPassword(),
+                user.getUname(),
+                user.getSex(),
+                user.getTel(),
+                user.getBir()
         });
         return result > 0;
     }
 
-    /**
-     * 通过用户名和电话重置密码（原有，保留）
+    /*
+     * 注册成功后插入user_role表
+     */
+    public static void addUserRole(int userId, int roleId) {
+        String sql = "INSERT INTO user_role(user_id, role_id) VALUES (?, ?)";
+        BaseDao.executeDML(sql, new Object[]{userId, roleId});
+    }
+
+    /*
+     * 通过用户名和电话重置密码
      */
     public static boolean resetPassword(String username, String tel, String newPwd) {
         String querySql = "SELECT 1 FROM users WHERE username=? AND tel=?";
@@ -89,7 +102,7 @@ public class UserDao
         }
     }
 
-    /**
+    /*
      * 只通过用户名重置密码（新加的重载，适配新界面）
      */
     public static boolean resetPassword(String username, String newPwd) {
@@ -110,7 +123,7 @@ public class UserDao
         }
     }
 
-    /**
+    /*
      * 可选：通过用户名查找用户（用于注册成功后自动登录或其它用途）
      */
     public static Users getUserByUsername(String username) {

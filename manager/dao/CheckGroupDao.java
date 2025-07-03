@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * 检查组管理DAO
  */
 public class CheckGroupDao {
 
-    /**
+    /*
      * 新增检查组
      */
     public static int addCheckGroup(CheckGroup group) {
@@ -22,7 +22,7 @@ public class CheckGroupDao {
         return BaseDao.executeDML(sql, params);
     }
 
-    /**
+    /*
      * 修改检查组
      */
     public static int updateCheckGroup(CheckGroup group) {
@@ -31,7 +31,7 @@ public class CheckGroupDao {
         return BaseDao.executeDML(sql, params);
     }
 
-    /**
+    /*
      * 删除检查组（同时可考虑删除group_item中的关联项）
      */
     public static int deleteCheckGroup(int groupId) {
@@ -44,7 +44,7 @@ public class CheckGroupDao {
         return BaseDao.executeDML(sql, groupId);
     }
 
-    /**
+    /*
      * 查询所有检查组
      */
     public static List<CheckGroup> getAllCheckGroups() {
@@ -67,7 +67,7 @@ public class CheckGroupDao {
         return list;
     }
 
-    /**
+    /*
      * 根据ID查询检查组
      */
     public static CheckGroup getCheckGroupById(int groupId) {
@@ -89,7 +89,7 @@ public class CheckGroupDao {
         return group;
     }
 
-    /**
+    /*
      * 查询某检查组下的所有检查项ID
      */
     public static List<Integer> getItemIdsByGroupId(int groupId) {
@@ -108,7 +108,7 @@ public class CheckGroupDao {
         return itemIds;
     }
 
-    /**
+    /*
      * 维护组与检查项的关联（先清空再批量添加）
      */
     public static void updateGroupItems(int groupId, List<Integer> itemIds) {

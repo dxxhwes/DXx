@@ -5,15 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * 安全的BaseDao工具类：自动管理连接关闭，防止连接泄漏。
- * 推荐用法：用完ResultSet后，在finally块同时关闭ResultSet、Statement和Connection。
+/*
+   安全的BaseDao工具类：自动管理连接关闭，防止连接泄漏。
+   用完ResultSet后，在finally块同时关闭ResultSet、Statement和Connection。
  */
 public class BaseDao {
 
-    /**
-     * 查询操作，返回ResultSet。
-     * 注意：调用方必须在finally中关闭ResultSet、PreparedStatement和Connection！
+    /*
+       查询操作，返回ResultSet。
+       调用方法在finally中关闭ResultSet、PreparedStatement和Connection。
      */
     public static ResultSet executeDQL(String sql, Object[] params) {
         Connection conn = DBConn.getConn();
@@ -30,12 +30,6 @@ public class BaseDao {
             }
             rs = st.executeQuery();
 
-            // 返回rs，但必须保证st和conn在rs关闭后再关闭
-            // 封装rs时不能关st和conn，否则rs失效
-            // 推荐调用方在finally中：
-            // try { if (rs != null) rs.close(); } catch (Exception ignore) {}
-            // try { if (st != null) st.close(); } catch (Exception ignore) {}
-            // try { if (conn != null) conn.close(); } catch (Exception ignore) {}
 
             return rs;
         } catch (Exception e) {
@@ -48,8 +42,8 @@ public class BaseDao {
         }
     }
 
-    /**
-     * 增删改操作，自动关闭所有JDBC资源。
+    /*
+       增删改操作，自动关闭所有JDBC资源。
      */
     public static int executeDML(String sql, Object... params) {
         Connection conn = null;

@@ -2,12 +2,16 @@ package manager.pojo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
-// CheckItem表数据
+/**
+ * 体检项（检查项）实体类
+ * 对应checkitem表，封装所有字段属性及通用方法。
+ */
 public class CheckItem implements Serializable {
     private Integer cid;             // 主键ID
-    private String ccode;            // 代号
-    private String cname;            // 名称
+    private String ccode;            // 检查项代号
+    private String cname;            // 检查项名称
     private String refer_val;        // 参考值
     private String unit;             // 单位
     private Timestamp create_date;   // 创建时间
@@ -17,7 +21,9 @@ public class CheckItem implements Serializable {
     private String status;           // 状态
     private Integer userId;          // 所属用户ID
 
-    // 11参数构造方法
+    /**
+     * 全参数构造方法
+     */
     public CheckItem(Integer cid, String ccode, String cname, String refer_val, String unit,
                      Timestamp create_date, Timestamp upd_date, Timestamp delete_date,
                      String option_user, String status, Integer userId) {
@@ -34,17 +40,22 @@ public class CheckItem implements Serializable {
         this.userId = userId;
     }
 
-    // 10参数构造方法（兼容旧代码）
+    /**
+     * 兼容旧代码的10参数构造方法（无userId）
+     */
     public CheckItem(Integer cid, String ccode, String cname, String refer_val, String unit,
                      Timestamp create_date, Timestamp upd_date, Timestamp delete_date,
                      String option_user, String status) {
         this(cid, ccode, cname, refer_val, unit, create_date, upd_date, delete_date, option_user, status, null);
     }
 
-    // 空参构造方法
+    /**
+     * 空参构造方法
+     */
     public CheckItem() {}
 
-    // Getter & Setter - 命名规范
+    // Getter & Setter
+
     public Integer getCid() { return cid; }
     public void setCid(Integer cid) { this.cid = cid; }
 
@@ -78,6 +89,15 @@ public class CheckItem implements Serializable {
     public Integer getUserId() { return userId; }
     public void setUserId(Integer userId) { this.userId = userId; }
 
+    /**
+     * 转为Object数组，顺序需与CheckItemDao.columnNames一致
+     */
+    public Object[] toArray() {
+        return new Object[]{
+                cid, ccode, cname, refer_val, unit, create_date, upd_date, delete_date, option_user, status
+        };
+    }
+
     @Override
     public String toString() {
         return "CheckItem{" +
@@ -95,13 +115,15 @@ public class CheckItem implements Serializable {
                 '}';
     }
 
-    // 可选：重写 equals/hashCode 方法，便于集合操作
+    /**
+     * 主键判等，便于集合操作
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CheckItem)) return false;
         CheckItem that = (CheckItem) o;
-        return cid != null && cid.equals(that.cid);
+        return Objects.equals(cid, that.cid);
     }
 
     @Override

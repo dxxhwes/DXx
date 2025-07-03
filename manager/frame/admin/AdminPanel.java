@@ -9,8 +9,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * 管理员主面板，支持检查项管理、检查组管理等功能
+/*
+ * 管理员主面板，支持检查项管理、检查组管理、管理员和用户管理等功能
  */
 public class AdminPanel extends JPanel {
     // 内部窗口合计
@@ -47,8 +47,24 @@ public class AdminPanel extends JPanel {
             }
         });
 
+        // 管理员管理菜单
         JMenu adminMenu = new JMenu("管理员");
+        adminMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                setContent(new UserTablePanel(1)); // role_id=1 显示管理员列表
+            }
+        });
+
+        // 用户管理菜单
         JMenu userMenu = new JMenu("用户");
+        userMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                setContent(new UserTablePanel(2)); // role_id=2 显示普通用户列表
+            }
+        });
+
         JMenu systemMenu = new JMenu("系统管理");
 
         menuBar.add(itemMenu);
@@ -61,6 +77,9 @@ public class AdminPanel extends JPanel {
         JMenuItem logoutMenu = new JMenuItem("退出登录");
         systemMenu.add(passwordMenu);
         systemMenu.add(logoutMenu);
+        passwordMenu.addActionListener(e -> {
+            setContent(new manager.frame.ChangePasswordPanel());
+        });
 
         logoutMenu.addMouseListener(new MouseAdapter() {
             @Override

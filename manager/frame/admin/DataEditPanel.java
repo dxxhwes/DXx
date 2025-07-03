@@ -61,7 +61,7 @@ public class DataEditPanel extends JInternalFrame
         boxBtn.add(btn);
         box.add(boxBtn);
 
-        // ----------- 修改1：标准三参数调用 -----------
+        // ----------- 标准三参数调用 -----------
         boolean isAdmin = MainFrame.users.getUsername().equals("admin");
         Integer userId = isAdmin ? null : MainFrame.users.getUser_id();
 
@@ -93,7 +93,7 @@ public class DataEditPanel extends JInternalFrame
                 checkItem.setUserId(MainFrame.users.getUser_id());
 
                 if(id==null){
-                    // ----------- 修改2：标准三参数查重 -----------
+                    // ----------- 标准三参数查重 -----------
                     CheckItem CheckItem1 = CheckItemDao.queryCheckItemByCcode(
                             field1.getText(),
                             userId,

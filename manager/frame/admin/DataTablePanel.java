@@ -11,6 +11,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
+/*
+ * 检查项数据列表面板
+ * 显示检查项的列表，并支持搜索、新增、编辑和删除功能。
+ * 继承自JInternalFrame，可作为AdminPanel的内部窗口使用。
+ */
+
 public class DataTablePanel extends JInternalFrame
 {
     private JTextField field1=new JTextField(10);
